@@ -21,6 +21,7 @@ public class PyExecuter {
                 System.out.println(s); //prints input stream
                 output(s);
             }
+            
             while ((s = stdError.readLine()) != null) { //while loop for while there is an error stream
     			Logger.main("[SEVERE] "+s,-1,file1);
             }
