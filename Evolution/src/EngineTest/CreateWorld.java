@@ -9,8 +9,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import toolbox.Random;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
+
+import RenderEngine.DisplayManager;
 import RenderEngine.Loader;
 import RenderEngine.MasterRenderer;
 import RenderEngine.OBJLoader;
@@ -32,10 +37,14 @@ import textures.TerrainTexturePack;
 
 public class CreateWorld {
 	public static void createNewWorld(String Name,BigInteger seed) {
+		
 		File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
-		
-		Loader loader = new Loader();
-		
+		Loader loader = Game.getLoader();
+		try {
+			GLContext.useContext(DisplayManager.class);
+		} catch (LWJGLException e) {
+			e.printStackTrace();
+		}
 		TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
 		TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
 		TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("path"));
@@ -44,7 +53,6 @@ public class CreateWorld {
 		TerrainTexturePack terrainTexturePack = new TerrainTexturePack(backgroundTexture,rTexture,gTexture,bTexture);
 		Logger.main("[HEALTHY] Created textures", 0, file);
 
-		System.out.println("Generating world map");
 		PyExecuter.main(null, "Mapper.py");
 		PyExecuter.main(null, "heightMap.py");
 		Logger.main("[HEALTHY] Map Generation Done!", 0, file);
@@ -144,12 +152,9 @@ public class CreateWorld {
 		}
 		Logger.main("[HEALTHY] Populated world", 0, file);
 		
-		MasterRenderer renderer = new MasterRenderer();
+		MasterRenderer renderer = Game.getMasterRenderer();
 		
-		
-		System.out.println("Generating DNA...");
 		PyExecuter.main(null, "test.py");
-		System.out.println("Done!");
 		Logger.main("[HEALTHY] DNA Generation done!", 0, file);
 		
 		rawModel HumanModel = OBJLoader.loadObjModel("Human1", loader);
@@ -166,7 +171,7 @@ public class CreateWorld {
 		List<GUITexture> guis = new ArrayList<GUITexture>();
 		GUITexture gui = new GUITexture(loader.loadTexture("Evolution"),new Vector2f(0f,0.8f),new Vector2f(0.25f,0.5f));
 		guis.add(gui);
-		GUIRenderer guiRenderer = new GUIRenderer(loader);
+		GUIRenderer guiRenderer = Game.getGuiRenderer();
 		
 		Logger.main("[HEALTHY] World loaded!", -1, file);
 		if (!(Name == "New World")) {
@@ -175,15 +180,13 @@ public class CreateWorld {
 			Saves.NewWorld(terrains);
 		}
 		
-		Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis);
+		Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis,loader);
 	}
 	
 	public static void loadWorld(String worldName,BigInteger seed) {
 		File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
-		
+		Loader loader = Game.getLoader();
 		if(Files.isDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName))) {
-
-			Loader loader = new Loader();
 
 			TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
 			TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
@@ -193,7 +196,7 @@ public class CreateWorld {
 			TerrainTexturePack terrainTexturePack = new TerrainTexturePack(backgroundTexture,rTexture,gTexture,bTexture);
 			Logger.main("[HEALTHY] Created textures", 0, file);
 
-			System.out.println("Grabbing world map");
+			Logger.main("Grabbing world map",0,file);
 			TerrainTexture blendMap;
 			try {
 				blendMap = new TerrainTexture(loader.reloadMap(new FileInputStream(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\maps\\worldMap.png")));
@@ -294,12 +297,10 @@ public class CreateWorld {
 				}
 				Logger.main("[HEALTHY] Populated world", 0, file);
 
-				MasterRenderer renderer = new MasterRenderer();
-
+				MasterRenderer renderer = Game.getMasterRenderer();
 
 				System.out.println("Generating DNA...");
 				PyExecuter.main(null, "test.py");
-				System.out.println("Done!");
 				Logger.main("[HEALTHY] DNA Generation done!", 0, file);
 
 				rawModel HumanModel = OBJLoader.loadObjModel("Human1", loader);
@@ -316,10 +317,10 @@ public class CreateWorld {
 				List<GUITexture> guis = new ArrayList<GUITexture>();
 				GUITexture gui = new GUITexture(loader.loadTexture("Evolution"),new Vector2f(0f,0.8f),new Vector2f(0.25f,0.5f));
 				guis.add(gui);
-				GUIRenderer guiRenderer = new GUIRenderer(loader);
+				GUIRenderer guiRenderer = Game.getGuiRenderer();
 
 				Logger.main("[HEALTHY] World loaded!", -1, file);
-				Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis);
+				Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis,loader);
 			} catch (FileNotFoundException e) {
 				Logger.FileNotFoundSevereErrorHandler(e, file);
 			}

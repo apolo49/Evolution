@@ -1,6 +1,8 @@
 from lib.PIL import Image as OpenImage,ImageTk
 from tkinter import Tk, BooleanVar,Label,Entry,Button,Checkbutton,CENTER,Listbox,END,RIGHT
 from hashlib import sha3_256
+from ctypes import *
+import string
 import os
 import Locator
 import random
@@ -28,6 +30,11 @@ try:
     NewWorldflag = open(NewWorldPath,'w')
     NewWorldflag.write("")
     NewWorldflag.close()
+    CurrentVersionNumber = open(os.getenv('APPDATA')+"\\Evolution\\flags and misc\\VersionNumber.dat").read()
+    files = []
+    for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves"):
+        files.extend(dirnames)
+        break
     
 except:
     if not os._exists(os.getenv("APPDATA")+"\\Evolution"):
@@ -72,10 +79,30 @@ finally:
     def ChooseWorld():
         window.title("Choose World")
         Remove()
-        f=[]
-        for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves"):
-            f.extend(dirnames)
-            break
+        f= []
+        for i in files:
+            for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i):
+                try:
+                    if "WorldData.dat" in filenames:
+                        lines = open(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i+"\\WorldData.dat","r").readlines()
+                        for j in lines:
+                            if "Version: " in j:
+                                VersionNo = j.replace("Version: ","")
+                                VersionNo = VersionNo.replace("\n","")
+                                if VersionNo != CurrentVersionNumber:
+                                    VersionNo = VersionNo+" -UNSAFE - Use At Own Discretion."
+                            if "World Name: " in j:
+                                WorldName = j.replace("World Name: ","")
+                                WorldName = WorldName.replace("\n","")
+                                f.append(WorldName+"                 "+VersionNo)
+                                break
+                    else:
+                        f.append(i+"                 Legacy Version -unable to retrieve version number. UNSAFE")
+                        break
+                except:
+                    f.append(i+"                 Legacy Version or Error -unable to retrieve version number. UNSAFE")
+                    break
+                break
         WorldList = Listbox(window)
         WorldList.place(relwidth=1,relheight=0.7,relx=0,rely=0.)
         for i in f:
@@ -132,23 +159,39 @@ finally:
         NewWorldflag = open(NewWorldPath,'w')
         NewWorldflag.write("1")
         NewWorldflag.close()
+        
         exit()
 
     def play(world):
-        chosenWorldflag = open(ChosenWorldPath,'w')
-        chosenWorldflag.write(world)
-        chosenWorldflag.close()
-        quitflag = open(QuitFlagPath,'w')
-        quitflag.write("0")
-        quitflag.close()
-        SeedInfoflag = open(SeedInfoPath,'w')
-        SeedGrab = open(os.getenv("APPDATA")+"\\Evolution\\saves\\"+world+"\\maps\\seed.flg","r")
-        SeedInfoflag.write(SeedGrab.read())
-        SeedGrab.close()
-        SeedInfoflag.close()
-        NewWorldflag = open(NewWorldPath,'w')
-        NewWorldflag.write("0")
-        NewWorldflag.close()
+        try:
+            for i in files:
+                for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i):
+                    if "WorldData.dat" in filenames:
+                        lines = open(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i+"\\WorldData.dat","r").readlines()
+                        for j in lines:
+                            if "Path Name: " in j:
+                                j = j.replace("Path Name: ","")
+                                j = j.replace("\n","")
+                                print(world)
+                                if j in world:
+                                    world=j
+                                    break
+            chosenWorldflag = open(ChosenWorldPath,'w')
+            chosenWorldflag.write(world)
+            chosenWorldflag.close()
+            quitflag = open(QuitFlagPath,'w')
+            quitflag.write("0")
+            quitflag.close()
+            SeedInfoflag = open(SeedInfoPath,'w')
+            SeedGrab = open(os.getenv("APPDATA")+"\\Evolution\\saves\\"+world+"\\maps\\seed.flg","r")
+            SeedInfoflag.write(SeedGrab.read())
+            SeedGrab.close()
+            SeedInfoflag.close()
+            NewWorldflag = open(NewWorldPath,'w')
+            NewWorldflag.write("0")
+            NewWorldflag.close()
+        except:
+            ErrorScreen()
         exit()
         
     def MainMenu():
@@ -160,6 +203,13 @@ finally:
         options.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.5,anchor=CENTER)
         quitButton = Button(window,text="Quit Game",command=lambda:QuitGame())
         quitButton.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.8,anchor=CENTER)
+        VersionNo = Label(window,text = "Current Version: "+CurrentVersionNumber).place(width = 120,height = 20,x = 0.0,rely=0.925)
+
+    def ErrorScreen():
+        Remove()
+        button = Button(text = "Return to Menu",command=lambda:MainMenu())
+        button.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.8,anchor=CENTER)
+        label = Label(text = "Error has occured", font= ("Helvetica", 72)).place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.2,anchor=CENTER)
 
     MainMenu()
 

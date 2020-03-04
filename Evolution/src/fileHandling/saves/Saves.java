@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import EngineTest.Setup;
 import fileHandling.log.Logger;
 import terrains.Terrain;
 
@@ -24,6 +27,10 @@ public class Saves {
 				if (Files.isDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\flags and misc")) == false) {
 					Files.createDirectories(Paths.get(System.getenv("APPDATA")+"\\Evolution\\flags and misc")); //If the Flags and misc directory doesn't exist then create it.
 				}
+				if (!Files.exists(Paths.get(System.getenv("APPDATA")+"\\Evolution\\flags and misc\\VersionNumber.dat"))) {
+					Files.createFile(Paths.get(System.getenv("APPDATA")+"\\Evolution\\flags and misc\\VersionNumber.dat"));
+				}
+				Files.write(Paths.get(System.getenv("APPDATA")+"\\Evolution\\flags and misc\\VersionNumber.dat"), Setup.getVersionNumber().getBytes());
 			} catch (IOException e) {
 				Logger.IOSevereErrorHandler(e, logfile); //If any errors are raised then report it to the logger (Logger.java, line 85).
 			}
@@ -43,7 +50,7 @@ public class Saves {
 		} catch (IOException e) {
 			Logger.IOSevereErrorHandler(e, logfile); //If any Input/Output errors then write to the logger (Logger.java, line 85).
 		}
-		main(worldName); //Set up the internal directory with the world name. 
+		main(worldName,"New World"); //Set up the internal directory with the world name. 
 	}
 	
 	/*
@@ -51,6 +58,7 @@ public class Saves {
 	 */
 	
 	public static void NewWorld(String worldName,List<Terrain> terrains) {
+		String realWorldName = worldName;
 		while (Files.isDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName)) == true) {
 			worldName = worldName + "-"; //While there is already a world with this name add a dash to the end of it (to avoid directory conflicts).
 		}
@@ -59,10 +67,10 @@ public class Saves {
 		} catch (IOException e) {
 			Logger.IOSevereErrorHandler(e, logfile); //If any Input/Output exception then write it to the logger (Logger.java, line 85).
 		}
-		main(worldName); //Set up the internals of the directory.
+		main(worldName,realWorldName); //Set up the internals of the directory.
 	}
 	
-	public static void main(String worldName) {
+	public static void main(String worldName,String realWorldName) {
 		try {
 			Files.createDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\maps")); //Create a new directory to store the map information inside the world file
 			FileInputStream heightMap = new FileInputStream("res//textures//world//heightMap.png"); //Create a file input stream for the height map
@@ -72,6 +80,9 @@ public class Saves {
 			Files.copy(worldMap,Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\maps\\worldMap.png"),StandardCopyOption.REPLACE_EXISTING); //Copy the world map to the map directory.
 			Files.copy(seed,Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\maps\\seed.flg"),StandardCopyOption.REPLACE_EXISTING); //Copy the seed to the map directory.
 			Files.createDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\Entities")); //Write the new directory of entities to the directory.
+			Files.createFile(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\WorldData.dat"));
+			Files.write(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\WorldData.dat"), ("Version: "+Setup.getVersionNumber()
+			+"\nDate Created: "+(new SimpleDateFormat("ss-mm-HH dd-MM-yyyy")).format(new Date())+"\nWorld Name: "+realWorldName+"\nPath Name: "+worldName).getBytes());
 			
 		} catch (IOException e) {
 			Logger.IOSevereErrorHandler(e, logfile); //If any Input/Output exception then write to the logger (Logger.java, line 85).

@@ -85,6 +85,14 @@ public class Logger {
 		}
 	}
 	
+	/*
+	 * The next several functions are essentially the same functions reporting events:
+	 * 		of differing severity
+	 * 		of different exception types
+	 * This is because java does not treat each different type of exception as the same object and cannot be passed to a function that requires a different exception,
+	 * each exception therefore has to be handled in a separate method and to reduce redundancy are all handled here in the logger.
+	 */
+	
 	public static void IOSevereErrorHandler(IOException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
@@ -102,6 +110,14 @@ public class Logger {
 	}
 	
 	public static void FileNotFoundSevereErrorHandler(FileNotFoundException e, File file) {
+		StringWriter sw = new StringWriter(); //Create a new string writer
+		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
+		String exceptionAsString = sw.toString(); //Make the string writer write to a string
+		main("[SEVERE]"+exceptionAsString,-1,file); //Make it a severe error and send to the main method (Logger.java, line 59)
+		System.exit(-1); //Close the program unhealthily
+	}
+	
+	public static void StackOverflowErrorHandler(StackOverflowError e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
