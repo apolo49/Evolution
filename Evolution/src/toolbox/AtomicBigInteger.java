@@ -26,7 +26,7 @@ public final class AtomicBigInteger extends Number implements java.io.Serializab
 	/**
 	 * Creates a new AtomicBigInteger with the given initial value.
 	 * 
-	 * @param initialValue
+	 * @param initialValue Initial Value of the Atomic Big Integer
 	 **/
 	
 	public AtomicBigInteger(BigInteger initialValue) {
@@ -37,7 +37,7 @@ public final class AtomicBigInteger extends Number implements java.io.Serializab
 	/**
 	 * Sets to the {@code newValue}
 	 * 
-	 * @param newValue
+	 * @param newValue, the new value of the Atomic Big Integer
 	 **/
 	
 	public final void set(BigInteger newValue) {

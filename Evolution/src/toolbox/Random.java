@@ -119,6 +119,8 @@ public class Random extends java.util.Random{
      * atomically updating the seed to
      * {@code (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1)}
      * and clearing the {@code haveNextNextGaussian} flag used by {@code nextGaussian}).
+     * 
+     * @param seed Initial seed as a BigInteger
      **/
     
     public synchronized void setSeed(BigInteger seed) {
@@ -180,7 +182,7 @@ public class Random extends java.util.Random{
      * catch(StackOverflowError e1) {
      *			Logger.StackOverflowErrorHandler(e1,file);
      *		}}
-     *
+     *</pre>
      * The ground state of this recursive algorithm is 0.
      *
      * @return the next pseudorandom, uniformly distributed {@code BigInteger}
