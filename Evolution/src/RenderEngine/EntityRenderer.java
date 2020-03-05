@@ -27,6 +27,19 @@ public class EntityRenderer {
 		shader.stop();
 	}
 	
+	/**
+	 * Prepares each instance of the model and
+	 * renders each model and draws it onto the display,
+	 * then unbinds the model.
+	 * 
+	 * 
+	 * @param entities
+	 * 			-List of all entities to be rendered to the display.
+	 * 
+	 * @see #prepareTexturedModel(TexturedModel)
+	 * @see #prepareInstance(Entity)
+	 */
+	
 	public void render(Map<TexturedModel,List<Entity>> entities) {
 		for(TexturedModel model:entities.keySet()) {
 			prepareTexturedModel(model);
@@ -38,6 +51,21 @@ public class EntityRenderer {
 			unbindTexturedModel();
 		}
 	}
+	
+	/**
+	 * This renders the model and applies the correct attributes and factors to the model.
+	 * <p>The attributes and factors includes:
+	 * <ul>
+	 * 		<li>Binding the vertex array (VAO)</li>
+	 * 		<li>Enabling all 3 attributes in the attribute array</li>
+	 * 		<li>Grabbing the texture on the model to be applied</li>
+	 * 		<li>Disables culling on the model if the model is already transparent</li>
+	 * 		<li>Loads fake lighting properties depending on whether the object is a false light</li>
+	 * 		<li>Loads the shine variables using the shine dampener and reflectivity factors</li>
+	 * 		<li>Applies and binds the texture to the model</li>
+	 * 
+	 * @param model
+	 */
 	
 	private void prepareTexturedModel(TexturedModel model) {
 		rawModel RawModel = model.getRawModel();

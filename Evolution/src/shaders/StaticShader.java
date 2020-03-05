@@ -25,10 +25,32 @@ public class StaticShader extends Shaders {
 	private int location_numberOfRows;
 	private int location_offset;
 	
+	/**
+	 * Uses the constructor in the parent class and uses the vertex
+	 * and fragment shader files in a generalised implementation.
+	 * 
+	 * <p> Works similarly to {@link guis.GUIShader#GUIShader()} and 
+	 * {@link shaders.TerrainShader#TerrainShader()}</p>
+	 * 
+	 * @see Shaders#Shaders(String, String)
+	 */
+	
 	public StaticShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 
+	/**
+	 * Uses the parent method ({@code Shaders.bindAttribute}) to bind
+	 * the... 
+	 * <ul>
+	 * 		<li>Position attribute to index 0</li>
+	 * 		<li>The texture coordinates to index 1</li>
+	 * 		<li>The normals of the vertices to index 2</li>
+	 * </ul> ...to the VAO.
+	 * 
+	 * @see Shaders#bindAttribute(int, String)
+	 */
+	
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
@@ -36,6 +58,13 @@ public class StaticShader extends Shaders {
 		super.bindAttribute(2, "normal");
 	}
 
+	/**
+	 * Grabs location of every uniform variable in the Fragment shader GLSL code.
+	 * This is done using the {@code getUniformLocation} in the {@code Shaders} class.
+	 * 
+	 * @see Shaders#getUniformLocation(String)
+	 */
+	
 	@Override
 	protected void getAllUniformLocations() {
 		location_transfomationMatrix = super.getUniformLocation("transfomationMatrix");
@@ -72,6 +101,16 @@ public class StaticShader extends Shaders {
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
 
+	/**
+	 * Loads up the transformation matrix using the {@code loadMatrix} method in the
+	 * {@code Shaders} class. This is so that objects can move around and be rendered
+	 * at different angles and places and be scaled.
+	 * 
+	 * @param matrix
+	 * 			-The transformation matrix to be loaded in.
+	 * @see Shaders#loadMatrix(int, Matrix4f)
+	 */
+	
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transfomationMatrix, matrix);
 	}

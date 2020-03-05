@@ -130,7 +130,6 @@ public class Logger {
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
-		System.exit(-1); //Close the program unhealthily
 	}
 	
 	public static void NullPointerUnhealthyErrorHandler(NullPointerException e, File file) {
@@ -146,7 +145,6 @@ public class Logger {
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
-		System.exit(-1); //Close the program unhealthily
 	}
 	
 	public static void UnhealthyException(Exception e, File file) {

@@ -94,6 +94,14 @@ public class MasterRenderer {
 		terrainShader.cleanUp();
 	}
 	
+	/**
+	 * This method must be called each frame, before any rendering is carried
+	 * out. It basically clears the screen of everything that was rendered last
+	 * frame (using the {@code glClear()} method). The {@code glClearColor()} method determines
+	 * the colour that it uses to clear the screen. In this example it makes the
+	 * entire screen red at the start of each frame.
+	 */
+	
 	public void prepare() {
 		GL11.glEnable(GL11.GL_DEPTH_TEST);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT|GL11.GL_DEPTH_BUFFER_BIT);

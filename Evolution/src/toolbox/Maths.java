@@ -8,6 +8,8 @@ import entities.Camera;
 
 public class Maths {
 	
+	
+	
 	public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
 		Matrix4f matrix = new Matrix4f();
 		matrix.setIdentity();
@@ -23,6 +25,26 @@ public class Maths {
 		float l3 = 1.0f - l1 - l2;
 		return l1 * p1.y + l2 * p2.y + l3 * p3.y;
 	}
+	
+	/**
+	 * Transforms the matrix by the given translation and allows 
+	 * for a movement of the object and scaling of the object.
+	 * 
+	 * <p> We do this by creating an identity matrix and translating the matrix 
+	 * by a 3D vector ({@code translation}). Then we rotate across each individual axis
+	 * using each of the rotation parameters (converted to radians), afterwards the matrix
+	 * is scaled using the scale factor. </p>
+	 * 
+	 * @param translation
+	 * @param rx
+	 * 			-The rotation around the x-axis (in degrees)
+	 * @param ry
+	 * 			-The rotation around the y-axis (in degrees)
+	 * @param rz
+	 * 			-The rotation around the z-axis (in degrees)
+	 * @param scale
+	 * @return the resulting transformation matrix
+	 */
 	
 	public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
 		Matrix4f matrix = new Matrix4f();
