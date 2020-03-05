@@ -16,10 +16,44 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Logger {
+/**
+ * This class handles the creation and handling of the log file.
+ * This includes:
+ * <ul>
+ * 		<li>The creation of the new latest log file to be written to.</li>
+ * 		<li>The renaming of the old latest log to the current system time when it became a redundant log.</li>
+ * 		<li>Creating the log directory.</li>
+ * 		<li>Retrying to make the log again if log creation failed in a recursive manner.</li>
+ * 		<li>Writing all errors to the log and any standard procedures in the process.</li>
+ * 		<li>Handling any and all errors in the program and giving the right severity to the log.</li>
+ * 		<li>Converting any exceptions to strings.</li>
+ * </ul>
+ * @author Joe
+ *
+ */
 
+public class Logger {
+	
+	/**
+	 * The path to the latest log
+	 */
+	
 	static String logPath = System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt"; //A string representing the full path of the latest log.
+	
+	/**
+	 * The array to that includes all current processes to be written to the log.
+	 */
+	
 	static List<String> Log = new ArrayList<String>(); //Array list of type string which stores the log to be added to the file
+	
+	/**
+	 * Method to create the files and directory used by the logs, including renaming the
+	 * old latest log to the current date and time where it became an old log.
+	 * 
+	 * @param tried 
+	 * 			-The amount of times the recursion has been attempted
+	 * @return The log file to be used.
+	 */
 	
 	public static File create(int tried){
 		try {
@@ -56,7 +90,20 @@ public class Logger {
 		return file; //Return the file
 	}
 	
-	public static void main(String e /*The string to be added to the log */,Integer rule /*the rule to be used (-1 is write to the file straight away, 0 is add to the array and await writing).*/, File file /*The file to be written to*/) {
+	/**
+	 * This method creates the log to be used and sends it to the the {@code buildlog} method.
+	 * If the rule is {@code int -1} then the {@code log(File, ArrayList<String>} method is called and the
+	 * {@code ArrayList<String>} {@code Log} is cleared using the built in {ArrayList<>.clear()} method.
+	 * 
+	 * @param e 
+	 * 			-The string to be added to the log
+	 * @param rule
+	 * 			-the rule to be used (-1 is write to the file straight away, 0 is add to the array and await writing).
+	 * @param file
+	 * 			-The file to be written to.
+	 */
+	
+	public static void main(String e, Integer rule , File file) {
 		try {
 			if (rule == -1) {
 				Buildlog(e); //Send the string to the BuildLog method (Logger.java, line 74)
@@ -73,9 +120,30 @@ public class Logger {
 		}
 	}
 	
-	public static void Buildlog(String exception) {
+	/**
+	 * This method adds the exception string is added to the {@code ArrayLog<String>}
+	 * {@code log}. 
+	 * 
+	 * @param exception
+	 * 			-The string to be added to the log.
+	 */
+	
+	private static void Buildlog(String exception) {
 		Log.add(exception+"\n"); //Add the string to the log and add a newline after
 	}
+	
+	/**
+	 * Gets the Path object linked to the {@code String} {@code logpath} variable.
+	 * This then loops through the {@code ArrayList<String>} {@code Log} and converts each
+	 * {@code String} to a byte array and write the bytes to the latest log file.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * @param Log
+	 * 			-The Log Array.
+	 * @throws IOException
+	 * 			Failure to access the file to be written to, or failure to write to the file.
+	 */
 	
 	public static void log(File file, List<String> Log) throws IOException {
 		Path path = FileSystems.getDefault().getPath(logPath); //Get a path object of the current log path
@@ -93,6 +161,24 @@ public class Logger {
 	 * each exception therefore has to be handled in a separate method and to reduce redundancy are all handled here in the logger.
 	 */
 	
+	/**
+	 * The method to handle IOException that are too severe for the program to continue with.
+	 * <p>Takes in a raw {@code IOException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then closes the system.
+	 * 
+	 * @param e
+	 * 			-The IOException to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #IOUnhealthyErrorHandler(IOException, File)
+	 * @see #FileNotFoundSevereErrorHandler(FileNotFoundException, File)
+	 * @see #NullPointerSevereErrorHandler(NullPointerException, File)
+	 * @see #StackOverflowErrorHandler(StackOverflowError, File)
+	 */
+	
 	public static void IOSevereErrorHandler(IOException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
@@ -100,6 +186,24 @@ public class Logger {
 		main("[SEVERE]"+exceptionAsString,-1,file); //Make it a severe error and send to the main method (Logger.java, line 59)
 		System.exit(-1); //Close the program unhealthily
 	}
+	
+	/**
+	 * The method to handle NullPointerExceptions that are too severe for the program to continue with.
+	 * <p>Takes in a raw {@code NullPointerException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then closes the system.
+	 * 
+	 * @param e
+	 * 			-The NullPointerSevereErrorHandler to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #NullPointerUnhealthyErrorHandler(NullPointerException, File)
+	 * @see #IOSevereErrorHandler(IOException, File)
+	 * @see #FileNotFoundSevereErrorHandler(FileNotFoundException, File)
+	 * @see #StackOverflowErrorHandler(StackOverflowError, File)
+	 */
 	
 	public static void NullPointerSevereErrorHandler(NullPointerException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
@@ -109,6 +213,24 @@ public class Logger {
 		System.exit(-1); //Close the program unhealthily
 	}
 	
+	/**
+	 * The method to handle FileNotFoundExceptions that are too severe for the program to continue with.
+	 * <p>Takes in a raw {@code FileNotFoundException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then closes the system.
+	 * 
+	 * @param e
+	 * 			-The FileNotFoundException to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #FileNotFoundUnhealthyErrorHandler(FileNotFoundException, File)
+	 * @see #IOSevereErrorHandler(IOException, File)
+	 * @see #NullPointerSevereErrorHandler(NullPointerException, File)
+	 * @see #StackOverflowErrorHandler(StackOverflowError, File)
+	 */
+	
 	public static void FileNotFoundSevereErrorHandler(FileNotFoundException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
@@ -116,6 +238,23 @@ public class Logger {
 		main("[SEVERE]"+exceptionAsString,-1,file); //Make it a severe error and send to the main method (Logger.java, line 59)
 		System.exit(-1); //Close the program unhealthily
 	}
+	
+	/**
+	 * The method to handle Stack Overflow Errors.
+	 * <p>Takes in a raw {@code StackOverflowError} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then closes the system.
+	 * 
+	 * @param e
+	 * 			-The StackOverflowError to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #IOSevereErrorHandler(IOException, File)
+	 * @see #NullPointerSevereErrorHandler(NullPointerException, File)
+	 * @see #FileNotFoundSevereErrorHandler(FileNotFoundException, File)
+	 */
 	
 	public static void StackOverflowErrorHandler(StackOverflowError e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
@@ -125,12 +264,48 @@ public class Logger {
 		System.exit(-1); //Close the program unhealthily
 	}
 
+	/**
+	 * The method to handle IOException that are unhealthy but not too severe for the program to continue with.
+	 * <p>Takes in a raw {@code IOException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then continues.
+	 * 
+	 * @param e
+	 * 			-The IOException to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #IOSevereErrorHandler(IOException, File)
+	 * @see #NullPointerUnhealthyErrorHandler(NullPointerException, File)
+	 * @see #FileNotFoundUnhealthyErrorHandler(FileNotFoundException, File)
+	 * @see #UnhealthyException(Exception, File)
+	 */
+	
 	public static void IOUnhealthyErrorHandler(IOException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
 	}
+	
+	/**
+	 * The method to handle NullPointerException that are unhealthy but not too severe for the program to continue with.
+	 * <p>Takes in a raw {@code NullPointerException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then continues.
+	 * 
+	 * @param e
+	 * 			-The NullPointerException to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #NullPointerSevereErrorHandler(NullPointerException, File)
+	 * @see #IOUnhealthyErrorHandler(IOException, File)
+	 * @see #FileNotFoundUnhealthyErrorHandler(FileNotFoundException, File)
+	 * @see #UnhealthyException(Exception, File)
+	 */
 	
 	public static void NullPointerUnhealthyErrorHandler(NullPointerException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
@@ -140,12 +315,48 @@ public class Logger {
 		System.exit(-1); //Close the program unhealthily
 	}
 	
+	/**
+	 * The method to handle FileNotFoundException that are unhealthy but not too severe for the program to continue with.
+	 * <p>Takes in a raw {@code FileNotFoundException} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then continues.
+	 * 
+	 * @param e
+	 * 			-The FileNotFoundException to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #FileNotFoundSevereErrorHandler(FileNotFoundException, File)
+	 * @see #IOUnhealthyErrorHandler(IOException, File)
+	 * @see #NullPointerUnhealthyErrorHandler(NullPointerException, File)
+	 * @see #UnhealthyException(Exception, File)
+	 */
+	
 	public static void FileNotFoundUnhealthyErrorHandler(FileNotFoundException e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
 	}
+	
+	/**
+	 * The method to handle an Exception that are unhealthy but not too severe for the program to continue with.
+	 * <p>Takes in a raw {@code Exception} and uses a {@code PrintWriter} and {@code StringWriter} 
+	 * to convert the exception to the string and uses the method {@code main} method and then continues.
+	 * 
+	 * @param e
+	 * 			-The Exception to be added to the log.
+	 * 
+	 * @param file
+	 * 			-The file to be written to.
+	 * 
+	 * @see #main
+	 * @see #FileNotFoundSevereErrorHandler(FileNotFoundException, File)
+	 * @see #IOUnhealthyErrorHandler(IOException, File)
+	 * @see #NullPointerUnhealthyErrorHandler(NullPointerException, File)
+	 * @see #FileNotFoundUnhealthyErrorHandler(FileNotFoundException, File)
+	 */
 	
 	public static void UnhealthyException(Exception e, File file) {
 		StringWriter sw = new StringWriter(); //Create a new string writer

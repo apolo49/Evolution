@@ -12,8 +12,44 @@ import org.lwjgl.util.vector.Vector3f;
 import fileHandling.log.Logger;
 import models.rawModel;
 
+/**
+ * <p>Loads an object file to a raw model as all is put into a VAO.</p>
+ * 
+ * <p>As well as processes vertices to obtain normals to the vertex to put
+ * a texture on it.</p>
+ * 
+ * @author Joe
+ *
+ */
+
 public class OBJLoader {
 	private static File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
+	
+	/**
+	 * <p>Loads the model from the object file processing vertex by vertex using a {@code BufferedReader} to
+	 * read the file as a {@code String}. The vertices are be loaded into an {@code ArrayList} a 3D vector
+	 * of {@code float} types; textures are loaded into an {@code ArrayList} of 2D {@code float} types;
+	 * normals are be loaded into an {@code ArrayList} a 3D vector of {@code float} types; indices are loaded
+	 * into an {@code ArrayList} of {@code Integer} types.</p>
+	 * 
+	 * <p>Then loops through the object file and parses each {@code String} to a {@code float}/{@code Integer} 
+	 * and adds it to the vector list. Then all the vertices are processed to create triangles to build the model.
+	 * Promptly the reader is closed and the processing is almost done.</p>
+	 * 
+	 * <p> Two new arrays are created representing vertices ({@code float[]} and indices {@code int[]}. The vertex array is defined as 3x the size
+	 * of the amount of vertices, whereas the indices array is defined as being the same size as the amount of indices.
+	 * All 3 dimensions of the vertices are added to the array in adjacent indexes. Then all indices are added to the indices
+	 * list.</p>
+	 * 
+	 * @param fileName
+	 * 			-The fileName of the {@code .obj} file.
+	 * 
+	 * @param loader
+	 * 			-The loader to use to load the object file as a {@code rawModel} in the prorgam.
+	 * 
+	 * @return The {@code rawModel} to be returned as a result from the object file
+	 */
+	
 	public static rawModel loadObjModel(String fileName, Loader loader) {
 		FileReader fr = null;
 		try {

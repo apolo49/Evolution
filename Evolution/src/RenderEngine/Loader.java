@@ -267,9 +267,12 @@ public class Loader {
 	 * to start reading. The {@code flip()} method does just that, putting the pointer
 	 * back to the start of the buffer.
 	 * </p>
+	 * 
 	 * @see #storeDataInFloatBuffer(float[])
+	 * 
 	 * @param data
 	 *            - The float data that is going to be stored in the buffer.
+	 *            
 	 * @return The FloatBuffer containing the data. This float buffer is ready
 	 *         to be loaded into a VBO.
 	 */
@@ -298,10 +301,12 @@ public class Loader {
 	 * to start reading. The {@code flip()} method does just that, putting the pointer
 	 * back to the start of the buffer.
 	 * </p>
+	 * 
 	 * @see #storeDataInIntBuffer(int[])
 	 * 
 	 * @param data
 	 *            - The float data that is going to be stored in the buffer.
+	 *            
 	 * @return The FloatBuffer containing the data. This float buffer is ready
 	 *         to be loaded into a VBO.
 	 */

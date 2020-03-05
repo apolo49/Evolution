@@ -35,7 +35,39 @@ import textures.ModelTexture;
 import textures.TerrainTexture;
 import textures.TerrainTexturePack;
 
+/**
+ * <p>
+ * This class is used to create and instantiate
+ * all entities and textures used in creating the world
+ * as well as calling the generation of all random numbers in the
+ * creation of the entities such as location and rotation and scale,
+ * using the seed passed through to the class.
+ * </p>
+ * 
+ * <p>
+ * This class is also used to create all maps if the map is not previously
+ * loaded/created and creates all files associated with the new world. (As of version
+ * 0.1.5A loading worlds is broken due to Python logic errors). 
+ * </p>
+ * 
+ * @author Joe
+ *
+ */
+
 public class CreateWorld {
+	
+	/**
+	 * This method is create a new world that has not previously
+	 * been made before, this includes making the new directory
+	 * and all files to be associated with the directory, including
+	 * maps and data files.
+	 * 
+	 * @param Name
+	 * 			-Name of the world to be created
+	 * @param seed
+	 * 			-Seed of the world to be created
+	 */
+	
 	public static void createNewWorld(String Name,BigInteger seed) {
 		
 		File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
@@ -182,6 +214,20 @@ public class CreateWorld {
 		
 		Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis,loader);
 	}
+	
+	/**
+	 * <p>This method is used to load a world that has previously been created
+	 * and saved. If the save does not exist the game crashes and reports the error.
+	 * Additionally, no maps are created are grabbed instead.</p>
+	 * 
+	 * <p>All terrains and entities are generated as per the seed therefore any movement
+	 * or manipulation of objects in the world are not yet saved as of version 0.1.5A</p>
+	 * 
+	 * @param Name
+	 * 			-Name of the world to be loaded
+	 * @param seed
+	 * 			-Seed of the world to be loaded
+	 */
 	
 	public static void loadWorld(String worldName,BigInteger seed) {
 		File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
