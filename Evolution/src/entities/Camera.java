@@ -3,6 +3,20 @@ package entities;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.util.vector.Vector3f;
 
+/**
+ * The camera is not an actual camera and it does not actually move, 
+ * the centre of the screen is always 0,0 to the computer and OpenGL.
+ * 
+ * <p>
+ * The camera is always joined to the player and can be rotated using the right
+ * mouse button and dragging the mouse (a lock button might be added in the future to
+ * disable this feature. (as of version 0.1.5A))
+ * </p>
+ * 
+ * @author Joe
+ *
+ */
+
 public class Camera {
 	
 	private float distanceFromPlayer = 50;
@@ -15,9 +29,20 @@ public class Camera {
 	
 	private Player player;
 	
+	/**
+	 * Constructs the camera and sets the {@code Player} for the camera attach onto.
+	 * 
+	 * @param player
+	 * 		-The {@code Player} {@code Entity} for the {@code Camera} to latch onto.
+	 */
+	
 	public Camera(Player player) {
 		this.player = player;
 	}
+	
+	/**
+	 * 
+	 */
 	
 	public void move() {
 		calculateZoom();

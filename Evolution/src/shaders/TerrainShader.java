@@ -26,11 +26,32 @@ public class TerrainShader extends Shaders{
 	private int location_BTex;
 	private int location_blendMap;
 	
+	/**
+	 * Uses the constructor in the parent class and uses the vertex
+	 * and fragment shader files in a generalised implementation.
+	 * 
+	 * <p> Works similarly to {@link guis.GUIShader#GUIShader()} and 
+	 * {@link shaders.TerrainShader#TerrainShader()}</p>
+	 * 
+	 * @see Shaders#Shaders(String, String)
+	 */
 	
 	public TerrainShader() {
 		super(VERTEX_FILE, FRAGMENT_FILE);
 	}
 
+	/**
+	 * Uses the parent method ({@code Shaders.bindAttribute}) to bind
+	 * the... 
+	 * <ul>
+	 * 		<li>Position attribute to index 0</li>
+	 * 		<li>The texture coordinates to index 1</li>
+	 * 		<li>The normals of the vertices to index 2</li>
+	 * </ul> ...to the VAO.
+	 * 
+	 * @see Shaders#bindAttribute(int, String)
+	 */
+	
 	@Override
 	protected void bindAttributes() {
 		super.bindAttribute(0, "position");
@@ -38,6 +59,13 @@ public class TerrainShader extends Shaders{
 		super.bindAttribute(2, "normal");
 	}
 
+	/**
+	 * Grabs location of every uniform variable in the Fragment shader GLSL code.
+	 * This is done using the {@code getUniformLocation} in the {@code Shaders} class.
+	 * 
+	 * @see Shaders#getUniformLocation(String)
+	 */
+	
 	@Override
 	protected void getAllUniformLocations() {
 		location_transfomationMatrix = super.getUniformLocation("transfomationMatrix");
@@ -55,6 +83,20 @@ public class TerrainShader extends Shaders{
 		location_blendMap = super.getUniformLocation("blendMap");
 	}
 	
+	/**
+	 * <p>
+	 * Sets the textures to connect to the right colours in the blend map and
+	 * use the blend map properly.
+	 * </p>
+	 * 
+	 * <p>
+	 * This uses the {@code loadInt} method in the {@code Shaders} class. Where the
+	 * backing texture is the int value of {@code 0}; red texture is the int value of {@code 1};
+	 * green texture is the int value of {@code 2}; blue texture is the int value of {@code 3};
+	 * finally the blend map has int value of {@code 4}.
+	 * </p>
+	 */
+	
 	public void connectTextureUnits() {
 		super.loadInt(location_backingTexture, 0);
 		super.loadInt(location_blendMap, 4);
@@ -71,10 +113,21 @@ public class TerrainShader extends Shaders{
 		super.loadFloat(location_shineDamper, damper);
 		super.loadFloat(location_reflectivity, reflectivity);
 	}
+	
+	/**
+	 * Loads up the transformation matrix using the {@code loadMatrix} method in the
+	 * {@code Shaders} class. This is so that objects can move around and be rendered
+	 * at different angles and places and be scaled.
+	 * 
+	 * @param matrix
+	 * 			-The transformation matrix to be loaded in.
+	 * @see Shaders#loadMatrix(int, Matrix4f)
+	 */
 
 	public void loadTransformationMatrix(Matrix4f matrix) {
 		super.loadMatrix(location_transfomationMatrix, matrix);
 	}
+	
 	public void loadLight(Light light) {
 		super.loadVector(location_lightPosition, light.getPosition());
 		super.loadVector(location_lightColour, light.getColour());

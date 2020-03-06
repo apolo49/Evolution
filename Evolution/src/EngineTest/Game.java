@@ -106,15 +106,6 @@ public class Game {
 		}
 	}
 	
-	public static void ChangeWorldCleanup() {
-		guiRenderer.cleanUP(); //Clean up all rendered GUIs and remove them (GUIRenderer.java, line 47).
-		Logger.main("[HEALTHY] Cleaned up GUI", 0, file); //Write to the logger that the GUI has been cleaned up (Logger.java, line 58).
-		renderer.cleanUp(); //Clean up all rendered entities and remove them (MasterRenderer.java, line 92).
-		Logger.main("[HEALTHY] Cleaned up Renderer", 0, file); //Write to the logger that the renderer has been cleared (Logger.java, line 58).
-		loader.cleanUp(); //Clean up the loader and remove all VBOs, VAOs and textures (Loader.java, line 90).
-		Logger.main("[HEALTHY] Cleaned up Loader", 0, file); //Write to the logger that the loader is clean (Logger.java, line 58).
-	}
-	
 	public static void EndCleanup() {
 		guiRenderer.cleanUP(); //Clean up all rendered GUIs and remove them (GUIRenderer.java, line 47).
 		Logger.main("[HEALTHY] Cleaned up GUI", 0, file); //Write to the logger that the GUI has been cleaned up (Logger.java, line 58).

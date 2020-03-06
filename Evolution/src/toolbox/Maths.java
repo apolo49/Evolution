@@ -36,13 +36,18 @@ public class Maths {
 	 * is scaled using the scale factor. </p>
 	 * 
 	 * @param translation
+	 * 
 	 * @param rx
 	 * 			-The rotation around the x-axis (in degrees)
+	 * 
 	 * @param ry
 	 * 			-The rotation around the y-axis (in degrees)
+	 * 
 	 * @param rz
 	 * 			-The rotation around the z-axis (in degrees)
+	 * 
 	 * @param scale
+	 * 
 	 * @return the resulting transformation matrix
 	 */
 	
@@ -56,6 +61,16 @@ public class Maths {
 		Matrix4f.scale(new Vector3f(scale,scale,scale), matrix, matrix);
 		return matrix;
 	}
+	
+	/**
+	 * Creates a new Identity matrix, rotating it by the camera pitch and a 3D vector with a {@code Integer} value of 1 in the x-axis.
+	 * The method rotates it again by the camera yaw against a 3D vector with an {@code Integer} value of 1 in the y-axis.
+	 * Then make the camera position negative (as we want the world to move against the movement of the camera) and translate the matrix
+	 * against the negative camera position and return it.
+	 * 
+	 * @param camera
+	 * @return
+	 */
 	
 	public static Matrix4f createViewMatrix(Camera camera) {
 		Matrix4f viewMatrix = new Matrix4f();

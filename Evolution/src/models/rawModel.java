@@ -13,6 +13,14 @@ public class rawModel {
 	private int vaoID;
 	private int vertexCount;
 	
+	/**
+	 * The constructor for the rawModel type. Takes in the VAO ID and Vertex Count to refer to the model in the loader.
+	 * 
+	 * @param VaoID
+	 * 
+	 * @param vertexCount
+	 */
+	
 	public rawModel(int VaoID, int vertexCount) {
 		this.vaoID = VaoID;
 		this.vertexCount = vertexCount;			

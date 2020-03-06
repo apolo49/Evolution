@@ -16,6 +16,21 @@ import shaders.StaticShader;
 import shaders.TerrainShader;
 import terrains.Terrain;
 
+/**
+ * <p>
+ * Imagine a scenario wherein you are trying to render 200 identical objects
+ * with identical textures but with different locations and rotations. You would
+ * generally have to instantiate 200 different cubes then render and process 200 cubes every frame 
+ * which would be horribly inefficient and resource intensive which is undesirable and pointless.
+ * A solution to this problem would be to bind and texture 1 cube and render it across the screen 200 times.</p>
+ * 
+ * <p> that is what this class achieves a solution to this problem as well as properly handling culling,
+ * shader management, entities and terrains.</p>
+ * 
+ * @author Joe
+ *
+ */
+
 public class MasterRenderer {
 	
 	private static final float FOV = 70; //size of field of view
@@ -106,6 +121,7 @@ public class MasterRenderer {
 
 	public void render(Light sun, Camera camera) {
 		prepare();
+		
 		shader.start();
 		shader.loadSkyColour(R, G, B);
 		shader.loadLight(sun);
@@ -175,8 +191,9 @@ public class MasterRenderer {
 	
 	/**
 	 * This method must be called each frame, before any rendering is carried
-	 * out. It basically clears the screen of everything that was rendered last
-	 * frame (using the {@code glClear()} method). The {@code glClearColor()} method determines
+	 * out. It initially checks which triangles are ontop of which using {@code GL11.GL_DEPTH_TEST}
+	 * clears the screen of everything that was rendered last frame 
+	 * (using the {@code glClear()} method). The {@code glClearColor()} method determines
 	 * the colour that it uses to clear the screen. In this example it makes the
 	 * entire screen red at the start of each frame.
 	 */

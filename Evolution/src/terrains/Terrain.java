@@ -28,6 +28,33 @@ public class Terrain {
 	private TerrainTexture blendMap;
 	private float[][] heights;
 	
+	/**
+	 * <p>The constructor for a terrain object using a {@code String} of the height map 
+	 * name rather than the {@code File} of the height map. This sets the {@code texturePack} &
+	 * {@code blendMap} attributes to the input variables of the same name.</p>
+	 * 
+	 * <p>The method also sets {@code x} and {@code z} values to the gridX and gridZ values 
+	 * multiplied by the size of the terrain to calculate their coordinates in the world. The model
+	 * is then generated using the {@code generateTerrain} method and 
+	 * the loader and {@code String} {@code heightMap}.</p>
+	 * 
+	 * @param gridX
+	 * 		-The location of the terrain in relation to other terrains on the x-axis.
+	 * @param gridZ
+	 * 		-The location of the terrain in relation to other terrains on the y-axis.
+	 * @param loader
+	 * 		-The loader in use by the current OpenGL context.
+	 * @param texturePack
+	 * 		-The {@code TerrainTexturePack} to be applied to the blend map on the terrain.
+	 * @param blendMap
+	 * 		-The blend map (or terrain map) to be used on the terrain.
+	 * @param heightMap
+	 * 		-The height map to be applied to give the terrain a shape as a string of the name.
+	 * 
+	 * @see #generateTerrain(Loader, String)
+	 * @see RenderEngine.Loader
+	 */
+	
 	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, String heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
@@ -35,6 +62,35 @@ public class Terrain {
 		this.z = gridZ * SIZE;
 		this.model = generateTerrain(loader,heightMap);
 	}
+	
+	/**
+	 * <p>The constructor for a terrain object using a {@Code File} of the height map 
+	 * rather than the {@code String} of the height map name. This sets the {@code texturePack} &
+	 * {@code blendMap} attributes to the input variables of the same name.</p>
+	 * 
+	 * <p>The method also sets {@code x} and {@code z} values to the gridX and gridZ values 
+	 * multiplied by the size of the terrain to calculate their coordinates in the world. The model
+	 * is then generated using the {@code generateTerrain} method and 
+	 * the loader and {@code File} {@code heightMap}.</p>
+	 * 
+	 * @param gridX
+	 * 		-The location of the terrain in relation to other terrains on the x-axis.
+	 * @param gridZ
+	 * 		-The location of the terrain in relation to other terrains on the y-axis.
+	 * @param loader
+	 * 		-The loader in use by the current OpenGL context.
+	 * @param texturePack
+	 * 		-The {@code TerrainTexturePack} to be applied to the blend map on the terrain.
+	 * @param blendMap
+	 * 		-The blend map (or terrain map) to be used on the terrain.
+	 * @param heightMap
+	 * 		-The file object of height map to be applied to give the terrain a shape.
+	 * 
+	 * @see #generateTerrain(Loader, String)
+	 * @see RenderEngine.Loader
+	 * @see java.io.File
+	 */
+	
 	public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap, File heightMap) {
 		this.texturePack = texturePack;
 		this.blendMap = blendMap;
@@ -43,26 +99,51 @@ public class Terrain {
 		this.model = generateTerrain(loader,heightMap);
 	}
 	
+	/**
+	 * @return The x-coordinate of the terrain in the world as a {@code float}.
+	 */
+	
 	public float getX() {
 		return x;
 	}
+	
+	/**
+	 * @return The z-coordinate of the terrain in the world as a {@code float}.
+	 */
 	
 	public float getZ() {
 		return z;
 	}
 
+	/**
+	 * @return The size of the terrain in coordinate units as a {@code float}.
+	 */
+	
 	public static float getSize() {
 		return SIZE;
 	}
 
+	/**
+	 * @return The terrain {@code rawModel}
+	 * @see rawModel
+	 */
+	
 	public rawModel getModel() {
 		return model;
 	}
 
+	/**
+	 * @return The {@code TerrainTexturePack} used and applied to terrain.
+	 */
+	
 	public TerrainTexturePack getTexturePack() {
 		return texturePack;
 	}
 
+	/**
+	 * @return The blend map used to show where textures belong on the terrain.
+	 */
+	
 	public TerrainTexture getBlendMap() {
 		return blendMap;
 	}

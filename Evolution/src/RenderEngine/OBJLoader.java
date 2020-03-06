@@ -122,6 +122,49 @@ public class OBJLoader {
 		return loader.loadtoVAO(verticesArray, texturesArray, normalsArray, indicesArray);
 	}
 	
+	/**
+	 * <p>Processes each vertex of the shape.</p>
+	 * 
+	 * <p>For each vertex which tells us which normal and which texture
+	 * is associated with which vertex position we want to put these in
+	 * the correct position in the texture and normal array. </p>
+	 * 
+	 * <p>The first bit of data to be processed will be the first vertex pointer which will
+	 * be the index for the vertex so it is added to the indices list. As the obj files 
+	 * start at 1 and our vertices start at 0, 1 needs to be negated from the current 
+	 * position of the pointer to get it to point at the right position in a list/array.</p>
+	 * 
+	 * <p>Now we wish to grab the texture that corresponds to this vertex which is stored in index
+	 * 1 of the vertex data {@code String} {@code Array} (the second element), however we need to negate 1
+	 * from the grabbed integer as the ".obj" file starts at position 1. We add this element to the texture
+	 * array at position {@code currentVertexPointer*2} for the x value and {@code currentVertexPointer*2+1}
+	 * for the y value texture which is negated from 1 (this is because OpenGL starts at the top left of 
+	 * the texture, as opposed to the bottom left like normal Cartesian geometry). The reason the pointer
+	 * position is multiplied by 2 is due to each texture having 2 floats, not 1 (an x float and a y float).</p>
+	 * 
+	 * <p>The normal vector associated with the current vertex to be processed is obtained (the data for this is
+	 * stored in index 2 of the vertex (element 3)) and again 1 is negated from the obtained parsed integer due to
+	 * obj file lists beginning at 1 instead of 0. Then, due to Normal vectors being 3 dimensional, the x value of
+	 * the normal is added to the normal array at position {@code currentVertexPointer*3}; the y value of 
+	 * the normal is added to the normal array at position {@code currentVertexPointer*3+1}; finally, the z value of
+	 * the normal is added to the normal array at position {@code currentVertexPointer*3+2}}.</p>
+	 * 
+	 * <p> That leaves the vertex processed properly so the loader, renderer and shader can handle the object.</p>
+	 * 
+	 * @param vertexData
+	 * 			-The data associated with the current vertex.
+	 * @param indices
+	 * 			-The list of indices for each vertex.
+	 * @param textures
+	 * 			-List of texture coordinates for each vertex.
+	 * @param normals
+	 * 			-The list of normal vectors to the vertices.
+	 * @param textureArray
+	 * 			-The float array for all processed textures to be added to in respect to their vertices.
+	 * @param normalsArray
+	 * 			-The float array of normals vectors for all processed normal vectors to be added to in respect to their vertices. 
+	 */
+	
 	private static void processVertex(String[] vertexData, List<Integer> indices, List<Vector2f> textures, List<Vector3f> normals, float[] textureArray, float[] normalsArray) {
 		int currentVertexPointer = Integer.parseInt(vertexData[0]) -1;
 		indices.add(currentVertexPointer);

@@ -16,9 +16,36 @@ import shaders.StaticShader;
 import textures.ModelTexture;
 import toolbox.Maths;
 
+/**
+ * The renderer specialised to render entities. This includes
+ * its own shader and projection matrix.
+ * 
+ * @author Joe
+ *
+ */
+
 public class EntityRenderer {
 
+	/**
+	 * The static shader to be used to render the Entities.
+	 */
+	
 	private StaticShader shader;
+	
+	/**
+	 * The constructor for the renderer for entities.
+	 * 
+	 * This sets the shader to be used in the renderer to the static shader passed in,
+	 * as well as starting the shader, loading the projection matrix and stopping the shader.
+	 * 
+	 * @param shader
+	 * 			-The shader to be used by the renderer, should be linked to the current context in use.
+	 * 
+	 * @param projectionMatrix
+	 * 			-The projection matrix to be used.
+	 * 
+	 * @see StaticShader
+	 */
 	
 	public EntityRenderer(StaticShader shader,Matrix4f projectionMatrix) {
 		this.shader = shader;
@@ -37,6 +64,7 @@ public class EntityRenderer {
 	 * 			-List of all entities to be rendered to the display.
 	 * 
 	 * @see #prepareTexturedModel(TexturedModel)
+	 * 
 	 * @see #prepareInstance(Entity)
 	 */
 	
@@ -63,6 +91,8 @@ public class EntityRenderer {
 	 * 		<li>Loads fake lighting properties depending on whether the object is a false light</li>
 	 * 		<li>Loads the shine variables using the shine dampener and reflectivity factors</li>
 	 * 		<li>Applies and binds the texture to the model</li>
+	 * </ul>
+	 * </p>
 	 * 
 	 * @param model
 	 */
@@ -84,6 +114,13 @@ public class EntityRenderer {
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, model.getTexture().getID());
 	}
 	
+	/**
+	 * Unbinds the model so that it is no longer in use or memory.
+	 * This is done by enabling culling from the renderer 
+	 * and disabling all attributes on the VAO. It then binds the vertex array to nothing, 
+	 * thus unbinding the textured model.
+	 */
+	
 	private void unbindTexturedModel() {
 		MasterRenderer.enableCulling();
 		GL20.glDisableVertexAttribArray(0);
@@ -91,6 +128,11 @@ public class EntityRenderer {
 		GL20.glDisableVertexAttribArray(2);
 		GL30.glBindVertexArray(0);
 	}
+	
+	/**
+	 * 
+	 * @param entity
+	 */
 	
 	private void prepareInstance(Entity entity) {
 		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(), entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());

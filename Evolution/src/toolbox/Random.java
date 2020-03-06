@@ -192,7 +192,9 @@ public class Random extends java.util.Random{
     public BigInteger nextBigInteger() {
     	Logger.main("Making new random bigInteger.", 0, file);
     	try {
-    		return ((BigInteger.valueOf((next(Integer.MAX_VALUE - 1))))).shiftLeft(32).add(BigInteger.valueOf(next(Integer.MAX_VALUE-1)));
+    		BigInteger random = ((BigInteger.valueOf((next(Integer.MAX_VALUE - 1))))).shiftLeft(32).add(BigInteger.valueOf(next(Integer.MAX_VALUE-1)));
+    		System.out.println(random);
+    		return random;
     	}catch(ArithmeticException e){
     		try {
     		StringWriter sw = new StringWriter(); //Create a new string writer
