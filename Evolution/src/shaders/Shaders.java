@@ -56,7 +56,9 @@ public abstract class Shaders {
 	 * <p>It then finishes by grabbing all uniforms</p>
 	 * 
 	 * @param vertexFile
+	 * 			-File of the relevant vertex shader GLSL code
 	 * @param fragmentFile
+	 * 			-File of the relevant fragment shader GLSL code
 	 * 
 	 * @see #loadShader
 	 * @see #bindAttributes
@@ -81,6 +83,7 @@ public abstract class Shaders {
 	 * Gets location of uniform in GLSL code.
 	 * 
 	 * @param uniformName
+	 * 			-Name of the uniform to look for.
 	 * @return {@code int} that represents location of uniform in GLSL code
 	 */
 	
