@@ -91,10 +91,11 @@ public class Logger {
 	}
 	
 	/**
+	 * <pre>
 	 * This method creates the log to be used and sends it to the the {@code buildlog} method.
-	 * If the rule is {@code int -1} then the {@code log(File, ArrayList<String>} method is called and the
-	 * {@code ArrayList<String>} {@code Log} is cleared using the built in {ArrayList<>.clear()} method.
-	 * 
+	 * If the rule is {@code int -1} then the {@code log(File, ArrayList &lt; String &gt; )} method is called and the
+	 * {@code ArrayList &lt; String &gt; } {@code Log} is cleared using the built in {@code ArrayList &lt; &gt; .clear()} method.
+	 * </pre>
 	 * @param e 
 	 * 			-The string to be added to the log
 	 * @param rule
@@ -312,7 +313,6 @@ public class Logger {
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
-		System.exit(-1); //Close the program unhealthily
 	}
 	
 	/**
@@ -363,6 +363,5 @@ public class Logger {
 		e.printStackTrace(new PrintWriter(sw)); //Get the stacktrace and put it to the string writer
 		String exceptionAsString = sw.toString(); //Make the string writer write to a string
 		main("[UNHEALTHY]"+exceptionAsString,-1,file); //Make it an unhealthy error and send to the main method (Logger.java, line 59)
-		System.exit(-1); //Close the program unhealthily
 	}
 }

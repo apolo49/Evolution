@@ -47,7 +47,7 @@ import python.PyExecuter;
 
 public class Setup {
 
-	private static String VersionNumber = "0.1.5A";
+	private static String VersionNumber = "0.1.5.1A";
 	
 	public static String getVersionNumber() {
 		return VersionNumber;

@@ -76,14 +76,12 @@ public class MasterRenderer {
 	 * Enables culling of the back face within the renderer.
 	 * This means unnecessary faces are not rendered and are not
 	 * taking up memory that is not needed as the player cannot see it.
-	 * <p>
 	 * <pre>
 	 * {@code
 	 * GL11.glEnable(GL11.GL_CULL_FACE);
 	 * GL11.glCullFace(GL11.GL_BACK);
 	 * }
 	 * </pre>
-	 * </p>
 	 */
 	
 	public static void enableCulling() {

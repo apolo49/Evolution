@@ -136,6 +136,12 @@ public class CreateWorld {
 		terrains.add(terrain6);
 		Logger.main("[HEALTHY] Created terrains", 0, file);
 		
+		if (!(Name == "New World")) {
+			Saves.NewWorld(Name,terrains);
+		}else {
+			Saves.NewWorld(terrains);
+		}
+		
 		List<Entity> allTrees = new ArrayList<Entity>();
 		List<Entity> allGrasses = new ArrayList<Entity>();
 		Random random = new Random(seed);
@@ -186,9 +192,6 @@ public class CreateWorld {
 		
 		MasterRenderer renderer = Game.getMasterRenderer();
 		
-		PyExecuter.main(null, "test.py");
-		Logger.main("[HEALTHY] DNA Generation done!", 0, file);
-		
 		rawModel HumanModel = OBJLoader.loadObjModel("Human1", loader);
 		ModelTexture HumanTexture = new ModelTexture(loader.loadTexture("plain"));
 		HumanTexture.setShineDamper(15);
@@ -206,13 +209,10 @@ public class CreateWorld {
 		GUIRenderer guiRenderer = Game.getGuiRenderer();
 		
 		Logger.main("[HEALTHY] World loaded!", -1, file);
-		if (!(Name == "New World")) {
-			Saves.NewWorld(Name,terrains);
-		}else {
-			Saves.NewWorld(terrains);
-		}
 		
-		Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis,loader);
+		Game.setAllEntities(allEntities);
+		
+		Game.main(renderer, camera, terrains, player, light, guiRenderer, guis,loader);
 	}
 	
 	/**
@@ -223,7 +223,7 @@ public class CreateWorld {
 	 * <p>All terrains and entities are generated as per the seed therefore any movement
 	 * or manipulation of objects in the world are not yet saved as of version 0.1.5A</p>
 	 * 
-	 * @param Name
+	 * @param worldName
 	 * 			-Name of the world to be loaded
 	 * @param seed
 	 * 			-Seed of the world to be loaded
@@ -233,7 +233,9 @@ public class CreateWorld {
 		File file = new File(System.getenv("APPDATA")+"\\Evolution\\logs\\Latest.txt");
 		Loader loader = Game.getLoader();
 		if(Files.isDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName))) {
-
+			
+			Game.setCurrentSave(worldName);
+			
 			TerrainTexture backgroundTexture = new TerrainTexture(loader.loadTexture("grass"));
 			TerrainTexture rTexture = new TerrainTexture(loader.loadTexture("dirt"));
 			TerrainTexture gTexture = new TerrainTexture(loader.loadTexture("path"));
@@ -345,10 +347,6 @@ public class CreateWorld {
 
 				MasterRenderer renderer = Game.getMasterRenderer();
 
-				System.out.println("Generating DNA...");
-				PyExecuter.main(null, "test.py");
-				Logger.main("[HEALTHY] DNA Generation done!", 0, file);
-
 				rawModel HumanModel = OBJLoader.loadObjModel("Human1", loader);
 				ModelTexture HumanTexture = new ModelTexture(loader.loadTexture("plain"));
 				HumanTexture.setShineDamper(15);
@@ -366,7 +364,9 @@ public class CreateWorld {
 				GUIRenderer guiRenderer = Game.getGuiRenderer();
 
 				Logger.main("[HEALTHY] World loaded!", -1, file);
-				Game.main(renderer, camera, terrains, player, allEntities, light, guiRenderer, guis,loader);
+				
+				Game.setAllEntities(allEntities);
+				Game.main(renderer, camera, terrains, player, light, guiRenderer, guis,loader);
 			} catch (FileNotFoundException e) {
 				Logger.FileNotFoundSevereErrorHandler(e, file);
 			}

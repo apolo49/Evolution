@@ -38,6 +38,7 @@ public class ModelTexture {
 	 * Set the number of rows in a compound texture and texture grid.
 	 * 
 	 * @param numberOfRows
+	 * 			-No of rows in the texture map.
 	 */
 	
 	public void setNumberOfRows(int numberOfRows) {
@@ -77,6 +78,7 @@ public class ModelTexture {
 	 * {@code boolean}.
 	 * 
 	 * @param hasTransparency
+	 * 			-Set to true if the texture has transparent elements.
 	 */
 	
 	public void setHasTransparency(boolean hasTransparency) {
@@ -117,6 +119,7 @@ public class ModelTexture {
 	 * the shine is dampened.
 	 * 
 	 * @param shineDamper
+	 * 			-Factor to dampen the shine by.
 	 */
 	public void setShineDamper(float shineDamper) {
 		this.shineDamper = shineDamper;
@@ -134,6 +137,7 @@ public class ModelTexture {
 	 * Sets the reflectivity factor of the object to the passed through value.
 	 * 
 	 * @param reflectivity
+	 * 			-Factor of reflectivity to be used.
 	 */
 	
 	public void setReflectivity(float reflectivity) {

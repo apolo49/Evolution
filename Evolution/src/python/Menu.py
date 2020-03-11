@@ -7,6 +7,7 @@ import os
 import Locator
 import random
 import sys
+import shutil
 
 window = Tk()
 #pathToImage = Locator.main("res\\textures\\Small Logo.png") #Find the small version of the logo
@@ -15,6 +16,7 @@ QuitFlagPath = os.getenv('APPDATA')+"\\Evolution\\flags and misc\\QuitFlag.flg"
 ChosenWorldPath = os.getenv('APPDATA')+"\\Evolution\\flags and misc\\chosenWorldFlag.flg"
 SeedInfoPath = os.getenv('APPDATA')+"\\Evolution\\flags and misc\\SeedInfoFlag.flg"
 NewWorldPath = os.getenv('APPDATA')+"\\Evolution\\flags and misc\\NewWorldflag.flg"
+WorldData = {}
 
 
 try:
@@ -84,6 +86,9 @@ finally:
             for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i):
                 try:
                     if "WorldData.dat" in filenames:
+                        UniqueID = ""
+                        WorldName = ""
+                        VersionNo = ""
                         lines = open(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i+"\\WorldData.dat","r").readlines()
                         for j in lines:
                             if "Version: " in j:
@@ -91,11 +96,25 @@ finally:
                                 VersionNo = VersionNo.replace("\n","")
                                 if VersionNo != CurrentVersionNumber:
                                     VersionNo = VersionNo+" -UNSAFE - Use At Own Discretion."
+                            else:
+                                if VersionNo == "":
+                                    VersionNo = "unable to retrieve version number. UNSAFE"
+                                    
                             if "World Name: " in j:
                                 WorldName = j.replace("World Name: ","")
                                 WorldName = WorldName.replace("\n","")
-                                f.append(WorldName+"                 "+VersionNo)
-                                break
+                            else:
+                                if WorldName == "":
+                                    WorldName = ""
+                                    
+                            if "Unique ID: " in j:
+                                UniqueID = j.replace("Unique ID: ","").replace("\n","")
+                                WorldData[WorldName+"                 "+VersionNo] = [UniqueID,i]
+                                
+                            else:
+                                if UniqueID == "":
+                                    UniqueID = ""
+                        f.append(WorldName+"                 "+VersionNo)
                     else:
                         f.append(i+"                 Legacy Version -unable to retrieve version number. UNSAFE")
                         break
@@ -108,6 +127,7 @@ finally:
         for i in f:
             WorldList.insert(END,i)
         CreateButton = Button(window,text="Create World",command=lambda:CreateWorld()).place(relwidth=0.4,relheight=0.1,relx=0.6,rely=0.7)
+        DeleteButton = Button(window,text="Delete World",command=lambda:DeleteMenu(WorldList.get(WorldList.curselection()))).place(relwidth=0.4,relheight=0.1,relx=0.6,rely=0.8)
         PlayButton = Button(window,text="Load World",command=lambda:play(WorldList.get(WorldList.curselection()))).place(relwidth=0.4,relheight=0.3,relx=0.1,rely=0.7)
         Button(window,text="Return to main menu",command=lambda:MainMenu()).place(relwidth=0.4,relheight=0.1,relx=0.6,rely=0.9)
 
@@ -122,6 +142,34 @@ finally:
         PlayButton = Button(window,text="Create World",command=lambda:makeWorld(WorldName.get(),"")).place(relwidth=0.25,relheight=0.2,relx=0.65,rely=0.8)
         BackButton = Button(window,text="Back",command=lambda:ChooseWorld()).place(relwidth=0.25,relheight=0.2,relx=0.1,rely=0.8)
         AdvButton = Button(window,text="Advanced Mode",command=lambda:AdvMode()).place(relwidth=0.5,relheight=0.3,relx=0.25,rely=0.45)
+
+    def DeleteMenu(ChosenWorld):
+        Remove()
+        Nobutton = Button(text = "No",command=lambda:ChooseWorld())
+        Nobutton.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.8,anchor=CENTER)
+        Yesbutton = Button(text = "Yes",command=lambda:DeleteWorld(ChosenWorld))
+        Yesbutton.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.6,anchor=CENTER)
+        label = Label(text = "Are you sure you want to delete this world?", font= ("Helvetica", 60)).place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.2,anchor=CENTER)
+
+    def DeleteWorld(ChosenWorld):
+        WorldToDelete = WorldData[ChosenWorld][1]
+        for i in files:
+            for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves\\"+WorldToDelete):
+                try:
+                    if "WorldData.dat" in filenames:
+                        lines = open(os.getenv('APPDATA')+"\\Evolution\\saves\\"+WorldToDelete+"\\WorldData.dat","r").readlines()
+                        for j in lines:
+                            if "Unique ID: " in j:
+                                if WorldData[ChosenWorld][0] == j.replace("Unique ID: ","").replace("\n",""):
+                                    shutil.rmtree(os.getenv("APPDATA")+"\\Evolution\\saves\\"+WorldToDelete)
+                                    break
+                                break
+                        break
+                    break
+                except:
+                    ErrorScreen()
+                break
+        ChooseWorld()
 
     def AdvMode():
         window.title("Create World")
@@ -163,19 +211,23 @@ finally:
         exit()
 
     def play(world):
+        WorldToPlay = WorldData[world][1]
+        FoundWorld = False
         try:
             for i in files:
                 for (dirpath, dirnames, filenames) in os.walk(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i):
                     if "WorldData.dat" in filenames:
                         lines = open(os.getenv('APPDATA')+"\\Evolution\\saves\\"+i+"\\WorldData.dat","r").readlines()
                         for j in lines:
-                            if "Path Name: " in j:
-                                j = j.replace("Path Name: ","")
-                                j = j.replace("\n","")
-                                print(world)
-                                if j in world:
-                                    world=j
+                            if "Unique ID: " in j:
+                                if WorldData[world][0] == j.replace("Unique ID: ","").replace("\n",""):
+                                    world=WorldToPlay
+                                    FoundWorld = True
                                     break
+                    if FoundWorld:
+                        break
+                if FoundWorld:
+                    break
             chosenWorldflag = open(ChosenWorldPath,'w')
             chosenWorldflag.write(world)
             chosenWorldflag.close()
@@ -203,7 +255,7 @@ finally:
         options.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.5,anchor=CENTER)
         quitButton = Button(window,text="Quit Game",command=lambda:QuitGame())
         quitButton.place(relwidth=0.8,relheight=0.1,relx=0.5,rely=0.8,anchor=CENTER)
-        VersionNo = Label(window,text = "Current Version: "+CurrentVersionNumber).place(width = 120,height = 20,x = 0.0,rely=0.925)
+        VersionNo = Label(window,text = "Current Version: "+CurrentVersionNumber).place(width = 130,height = 20,x = 0.0,rely=0.92)
 
     def ErrorScreen():
         Remove()

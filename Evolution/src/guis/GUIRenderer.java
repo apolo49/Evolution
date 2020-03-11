@@ -19,9 +19,9 @@ import toolbox.Maths;
  * 
  * @author Joe
  *
- * @see MasterRenderer
- * @see EntityRenderer
- * @see TerrainRenderer
+ * @see RenderEngine.MasterRenderer
+ * @see RenderEngine.EntityRenderer
+ * @see RenderEngine.TerrainRenderer
  * 
  * 
  */
@@ -95,21 +95,21 @@ public class GUIRenderer {
 	 * 			<li>Loads the transformation matrix into the {@code GUIShader}.</li>
 	 * 
 	 * 			<li>{@code glDrawArrays} is called so the entire rendered quad can be drawn to the screen using the
-	 * 				{@code GL_TRIANGLE_STRIP} method and the vertex count ({@code rawModel.getVertexCount}).</ul>
+	 * 				{@code GL_TRIANGLE_STRIP} method and the vertex count ({@code rawModel.getVertexCount}).</li>
+	 * 		</ul>
 	 * <li>Penultimately, we enable the depth test to allow GUIs to be rendered over each-other.</li>
 	 * 
 	 * <li>Finally, we disable attribute 0 and bind the array then halt the shader 
 	 * ({@code glDisableVertexAttribArray}, {@code glBindVertexArray}, {@code GUIShader.stop()}).</li>
 	 * 
 	 * </ul>
-	 * </p>
 	 * 
 	 * @param guis
 	 * 			-All {@code GUITexture}s to be rendered on the screen.
 	 * 
 	 * @see GUIShader
-	 * @see MasterRenderer.render
-	 * @see EntityRenderer.render
+	 * @see RenderEngine.MasterRenderer#render
+	 * @see RenderEngine.EntityRenderer#render
 	 */
 	
 	public void render(List<GUITexture> guis) {

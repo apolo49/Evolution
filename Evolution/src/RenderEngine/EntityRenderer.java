@@ -92,9 +92,9 @@ public class EntityRenderer {
 	 * 		<li>Loads the shine variables using the shine dampener and reflectivity factors</li>
 	 * 		<li>Applies and binds the texture to the model</li>
 	 * </ul>
-	 * </p>
 	 * 
 	 * @param model
+	 * 			-The textured model to be prepared.
 	 */
 	
 	private void prepareTexturedModel(TexturedModel model) {
@@ -130,8 +130,8 @@ public class EntityRenderer {
 	}
 	
 	/**
-	 * 
 	 * @param entity
+	 * 		-The entity to be prepared for rendering
 	 */
 	
 	private void prepareInstance(Entity entity) {

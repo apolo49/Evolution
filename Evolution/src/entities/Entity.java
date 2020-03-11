@@ -22,12 +22,12 @@ import models.TexturedModel;
 
 public class Entity {
 
-	private TexturedModel model;
-	private Vector3f position;
-	private float rotX,rotY,rotZ;
-	private float scale;
+	protected TexturedModel model;
+	protected Vector3f position;
+	protected float rotX,rotY,rotZ;
+	protected float scale;
 	
-	private int textureIndex = 0;
+	protected int textureIndex = 0;
 	
 	/**
 	 * Constructor for an entity with only one frame of texture.
@@ -158,6 +158,7 @@ public class Entity {
 	 * of coordinates on the menu.
 	 * 
 	 * @param position
+	 * 		-Position to set the entity to as a coordinate of the 3D vector.
 	 */
 	
 	public void setPosition(Vector3f position) {
@@ -176,6 +177,7 @@ public class Entity {
 	 * Sets the rotation of the entity on the x-axis.
 	 * 
 	 * @param rotX
+	 * 			-Value to set the rotation of the entity to on the x-axis
 	 */
 
 	public void setRotX(float rotX) {
@@ -193,7 +195,8 @@ public class Entity {
 	/**
 	 * Sets the rotation of the entity on the y-axis.
 	 * 
-	 * @param rotX
+	 * @param rotY
+	 * 			-The rotation on the entity on the y-axis.
 	 */
 	
 	public void setRotY(float rotY) {
@@ -209,9 +212,10 @@ public class Entity {
 	}
 
 	/**
-	 * Sets the rotation of the entity on the y-axis.
+	 * Sets the rotation of the entity on the z-axis.
 	 * 
-	 * @param rotX
+	 * @param rotZ
+	 * 			-The rotation on the entity non the Z-axis.
 	 */
 	
 	public void setRotZ(float rotZ) {
@@ -231,6 +235,7 @@ public class Entity {
 	 * Change the scale factor acting on the entity.
 	 * 
 	 * @param scale
+	 * 			-Scale factor
 	 */
 	
 	public void setScale(float scale) {

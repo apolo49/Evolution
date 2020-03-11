@@ -43,6 +43,7 @@ public class GUIShader extends Shaders {
     * matrix in for the GUI quads to see the true location of the GUI on the screen.
     * 
     * @param matrix
+    * 		-Transformation matrix.
     * 
     * @see Shaders#loadMatrix
     */
@@ -66,7 +67,7 @@ public class GUIShader extends Shaders {
    /**
     * Binds the position attribute to location 0 in the VAO.
     * 
-    * @see Shaders#bindAttribute(int,string)
+    * @see Shaders#bindAttribute
     */
    @Override
    protected void bindAttributes() {

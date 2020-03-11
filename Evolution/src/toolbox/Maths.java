@@ -36,6 +36,7 @@ public class Maths {
 	 * is scaled using the scale factor. </p>
 	 * 
 	 * @param translation
+	 * 			-The translation to move the object by in all 3 axis.
 	 * 
 	 * @param rx
 	 * 			-The rotation around the x-axis (in degrees)
@@ -47,6 +48,7 @@ public class Maths {
 	 * 			-The rotation around the z-axis (in degrees)
 	 * 
 	 * @param scale
+	 * 			-The factor to scale the transformation by.
 	 * 
 	 * @return the resulting transformation matrix
 	 */
@@ -69,7 +71,8 @@ public class Maths {
 	 * against the negative camera position and return it.
 	 * 
 	 * @param camera
-	 * @return
+	 * 			-The camera of the player.
+	 * @return The view matrix
 	 */
 	
 	public static Matrix4f createViewMatrix(Camera camera) {

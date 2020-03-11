@@ -1,8 +1,11 @@
 package entities;
 
+import java.util.List;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector3f;
 
+import EngineTest.Game;
 import RenderEngine.DisplayManager;
 import models.TexturedModel;
 import terrains.Terrain;
@@ -72,6 +75,13 @@ public class Player extends Entity {
 		}
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
 			jump();
+		}
+		if(Keyboard.isKeyDown(Keyboard.KEY_H)) {
+			List<Entity> AllEntities = Game.getAllEntities();
+			Human NewHuman = new Human(this.position, this.rotX, this.rotY, this.rotZ, 1);
+			System.out.println(NewHuman.getStats());
+			AllEntities.add(NewHuman);
+			Game.setAllEntities(AllEntities);
 		}
 	}
 	

@@ -30,7 +30,7 @@ public class Terrain {
 	
 	/**
 	 * <p>The constructor for a terrain object using a {@code String} of the height map 
-	 * name rather than the {@code File} of the height map. This sets the {@code texturePack} &
+	 * name rather than the {@code File} of the height map. This sets the {@code texturePack} and
 	 * {@code blendMap} attributes to the input variables of the same name.</p>
 	 * 
 	 * <p>The method also sets {@code x} and {@code z} values to the gridX and gridZ values 
@@ -64,8 +64,8 @@ public class Terrain {
 	}
 	
 	/**
-	 * <p>The constructor for a terrain object using a {@Code File} of the height map 
-	 * rather than the {@code String} of the height map name. This sets the {@code texturePack} &
+	 * <p>The constructor for a terrain object using a {@code File} of the height map 
+	 * rather than the {@code String} of the height map name. This sets the {@code texturePack} and
 	 * {@code blendMap} attributes to the input variables of the same name.</p>
 	 * 
 	 * <p>The method also sets {@code x} and {@code z} values to the gridX and gridZ values 

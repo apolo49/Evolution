@@ -2,6 +2,7 @@ package EngineTest;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.lwjgl.input.Keyboard;
@@ -12,6 +13,7 @@ import RenderEngine.Loader;
 import RenderEngine.MasterRenderer;
 import entities.Camera;
 import entities.Entity;
+import entities.Human;
 import entities.Light;
 import entities.Player;
 import guis.GUIRenderer;
@@ -25,6 +27,9 @@ public class Game {
 	private static Loader loader = new Loader(); //Make a new loader (loads different objects to be interpreted in the program) (loader.java, line 25).
 	private static MasterRenderer renderer = new MasterRenderer(); //Make a new MasterRenderer (Used to render GUIs, Textures and terrain) (MasterRenderer.java, line 40).
 	private static GUIRenderer guiRenderer = new GUIRenderer(loader); //Make a new GUIRenderer using the loader (GUIRenderer.java, line 20).
+	private static String CurrentSave;
+	private static List<Entity> allEntities;
+	private static List<Human> allHumans = new ArrayList<Human>();
 	
 	/**
 	 * @return the master Renderer
@@ -47,7 +52,43 @@ public class Game {
 		return loader;
 	}
 	
-	public static void main(MasterRenderer renderer, Camera camera, List<Terrain> terrains,Player player,List<Entity> allEntities,Light light,GUIRenderer guiRenderer,List<GUITexture> guis, Loader loader ) {
+	public static String getCurrentSave() {
+		return CurrentSave;
+	}
+	
+	public static void setCurrentSave(String CurrentSave) {
+		Game.CurrentSave = CurrentSave;
+	}
+	
+	/**
+	 * @return the allEntities
+	 */
+	public static List<Entity> getAllEntities() {
+		return allEntities;
+	}
+
+	/**
+	 * @param allEntities the allEntities to set
+	 */
+	public static void setAllEntities(List<Entity> allEntities) {
+		Game.allEntities = allEntities;
+	}
+
+	/**
+	 * @return the all Humans
+	 */
+	public static List<Human> getAllHumans() {
+		return allHumans;
+	}
+
+	/**
+	 * @param allHumans the list of all humans to set
+	 */
+	public static void setAllHumans(List<Human> allHumans) {
+		Game.allHumans = allHumans;
+	}
+
+	public static void main(MasterRenderer renderer, Camera camera, List<Terrain> terrains,Player player,Light light,GUIRenderer guiRenderer,List<GUITexture> guis, Loader loader ) {
 		
 		boolean gamePaused = false;
 		
@@ -98,6 +139,9 @@ public class Game {
 			}
 			for (Entity entity : allEntities) {
 				renderer.processEntity(entity);
+			}
+			for (Human human : allHumans) {
+				renderer.processEntity(human);
 			}
 			renderer.render(light, camera);
 			guiRenderer.render(guis);

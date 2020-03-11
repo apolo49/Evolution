@@ -22,6 +22,7 @@ public class TerrainTexture {
 	 * Sets the texture ID attribute to the passed through texture ID.
 	 * 
 	 * @param textureID
+	 * 			-ID of the texture to be used as the terrain texture.
 	 */
 	
 	public TerrainTexture(int textureID) {

@@ -50,7 +50,6 @@ public class Loader {
 	 * 			
 	 * <li>The list of indices on the model (.obj format).</li>
 	 * </ul>
-	 * </p>
 	 * @param positions
 	 *            - The 3D positions of each vertex in the geometry (in this
 	 *            example a quad).

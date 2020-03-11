@@ -67,6 +67,7 @@ public class Light {
 	/**
 	 * Set the colour and intensity of the light.
 	 * @param colour
+	 * 		-The colour and intensity of the light.
 	 */
 	
 	public void setColour(Vector3f colour) {

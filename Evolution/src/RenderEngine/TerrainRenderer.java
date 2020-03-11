@@ -80,9 +80,9 @@ public class TerrainRenderer {
 	 * 		<li>Then loading the shine variable where the dampening factor is 1 
 	 * 			and the reflectivity factor is 0<li>
 	 * </ul>
-	 * </p>
 	 * 
-	 * @param model
+	 * @param terrain
+	 * 			-The terrain to prepare
 	 */
 	
 	private void prepareTerrain(Terrain terrain) {
@@ -103,6 +103,7 @@ public class TerrainRenderer {
 	 * the respective texture ID to be bound to.
 	 *  
 	 * @param terrain
+	 * 			-The terrain to texture.
 	 */
 	
 	private void bindTextures(Terrain terrain) {
@@ -137,6 +138,7 @@ public class TerrainRenderer {
 	 * All rotation possibilities are set to 0 and the scale factor is set to 1. The transformation matrix is then loaded.
 	 * 
 	 * @param terrain
+	 * 			-The terrain to transform.
 	 */
 	
 	private void loadModelMatrix(Terrain terrain) {

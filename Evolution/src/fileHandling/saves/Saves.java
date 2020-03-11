@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import EngineTest.Game;
 import EngineTest.Setup;
 import fileHandling.log.Logger;
 import terrains.Terrain;
@@ -82,8 +83,9 @@ public class Saves {
 			Files.createDirectory(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\Entities")); //Write the new directory of entities to the directory.
 			Files.createFile(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\WorldData.dat"));
 			Files.write(Paths.get(System.getenv("APPDATA")+"\\Evolution\\saves\\"+worldName+"\\WorldData.dat"), ("Version: "+Setup.getVersionNumber()
-			+"\nDate Created: "+(new SimpleDateFormat("ss-mm-HH dd-MM-yyyy")).format(new Date())+"\nWorld Name: "+realWorldName+"\nPath Name: "+worldName).getBytes());
-			
+			+"\nDate Created: "+(new SimpleDateFormat("ss-mm-HH dd-MM-yyyy")).format(new Date())+"\nWorld Name: "+realWorldName+"\nPath Name: "+worldName+"\nUnique ID: "+realWorldName.getBytes().hashCode()+
+			worldName.getBytes().hashCode()+((new SimpleDateFormat("ss-mm-HH dd-MM-yyyy")).format(new Date())).hashCode()).getBytes());
+			Game.setCurrentSave(worldName);
 		} catch (IOException e) {
 			Logger.IOSevereErrorHandler(e, logfile); //If any Input/Output exception then write to the logger (Logger.java, line 85).
 		}

@@ -9,7 +9,7 @@ import textures.ModelTexture;
  * @author Joe
  *
  *@see entities.Entity
- *@see moodels.rawModel
+ *@see rawModel
  */
 
 public class TexturedModel {
@@ -20,7 +20,7 @@ public class TexturedModel {
 	/**
 	 * <p>Creates the textured model to be used inside an entity.</p>
 	 * <p>The constructor sets the {@code RawModel} attribute to the passed in {@code rawModel} parameter
-	 * and the {@texture} attribute to the texture passed in.</p>
+	 * and the {@code texture} attribute to the texture passed in.</p>
 	 * 
 	 * @param model
 	 * 			-The {@code rawModel} for the {@code ModelTexture} to be applied to.
