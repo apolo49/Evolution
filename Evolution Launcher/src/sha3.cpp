@@ -4,13 +4,10 @@
 #include <bitset>
 #include <algorithm>
 #include <vector>
-#include <thread>
 #include <sstream>
 #include <Bits.h>
 #include <unordered_map>
 #include <inttypes.h>
-#define callable
-std::thread thread_object(callable);
 
 
 inline uint64_t Reverse32(uint64_t value)
@@ -246,9 +243,10 @@ static std::string SHA512 (std::string key) {
             int current_iteration = l;
             ChunkToAdd = "";
 
-            for (l = current_iteration; (l < current_iteration + 8) || (l < currentChunk.length()); l++) {
-                std::cout << l << std::endl;
-                ChunkToAdd += currentChunk[l];
+            for (l = current_iteration; l < (current_iteration + 8); l++) {
+                if (l < currentChunk.length()) {
+                    ChunkToAdd += currentChunk[l];
+                }
             }
 
             std::istringstream reader(ChunkToAdd);
@@ -259,8 +257,8 @@ static std::string SHA512 (std::string key) {
         uint64_t s1;
 
         for (j = 16; j < 80; j++) {
-            s0 = _rotr(w[j - 15], 1) ^ _rotr(w[j - 15], 8) ^ (w[j - 15] >> 7);
-            s1 = _rotr(w[j - 2], 19) ^ _rotr(w[j - 2], 61) ^ (w[j - 2] >> 6);
+            s0 = rightRotate(w[j - 15], 1) ^ rightRotate(w[j - 15], 8) ^ (w[j - 15] >> 7);
+            s1 = rightRotate(w[j - 2], 19) ^ rightRotate(w[j - 2], 61) ^ (w[j - 2] >> 6);
             w[j] = mod64add(mod64add(mod64add(w[j - 16], s0), w[j - 7]), s1);
         }
 
@@ -281,11 +279,11 @@ static std::string SHA512 (std::string key) {
         uint64_t temp2;
 
         for (j = 0; j < 80; j++) {
-            S1 = _rotr(e, 14) ^ _rotr(e, 18) ^ _rotr(e, 41);
+            S1 = rightRotate(e, 14) ^ rightRotate(e, 18) ^ _rotr(e, 41);
             ch = (e & f) ^ ((~ e) & g);
             temp1 = mod64add(mod64add(mod64add(mod64add(h, S1), ch), k[j]), w[j]);
 
-            S0 = _rotr(a , 28) ^ _rotr(a , 34) ^ _rotr(a , 39);
+            S0 = rightRotate(a , 28) ^ rightRotate(a , 34) ^ _rotr(a , 39);
             maj = (a & b) ^ (a & c) ^ (b & c);
             temp2 = mod64add(S0, maj);
 
