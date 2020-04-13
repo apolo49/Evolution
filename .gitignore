@@ -1,4 +1,5 @@
 **/lib/
+*.html
 
 ### C++ ###
 # Prerequisites
