@@ -1,5 +1,5 @@
-**/lib
-**/libs
-**/dependencies
-*.c
-*.pyc
+/**/lib
+/**/libs
+/**/dependencies
+/*.c
+/*.pyc
